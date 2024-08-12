@@ -1,0 +1,26 @@
+{application, wallet, [
+    {description, "An OTP application"},
+    {vsn, "0.1.0"},
+    {registered, []},
+    {mod, {wallet_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        cowboy,
+        mysql
+    ]},
+    {env, []},
+    {modules, [
+        wallet_app,
+        wallet_sup,
+        users_handler,
+        login_handler,
+        handler_utils,
+        db_users,
+        db_utils,
+        wallet_session_db
+    ]},
+
+    {licenses, ["Apache-2.0"]},
+    {links, []}
+]}.

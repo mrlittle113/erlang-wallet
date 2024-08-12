@@ -1,0 +1,157 @@
+openapi: "3.0.0"
+info:
+  title: "My API"
+  description: "A simple API for managing users"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:8080/api"
+components:
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+security:
+  - token: []
+paths:
+  /login:
+    post:
+      summary: "Login to obtain a token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: "Successful login, returns a token"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                required:
+                  - token
+        "404":
+          description: "User not found"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        "500":
+          description: "Internal Error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /users:
+    get:
+      summary: "Get all users"
+      security:
+        - token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  format: email
+                  example: "jqepecivs98wp2vu2tneqyqgf"
+              required:
+                - token
+      responses:
+        "200":
+          description: "A list of users"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    name:
+                      type: string
+                    role:
+                      type: string
+                      enum:
+                        - admin
+                        - user
+                    money:
+                      type: integer
+                  required:
+                    - email
+                    - name
+                    - role
+                    - money
+        "400":
+          description: "Not authorized"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+      summary: "Create user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "yourpassword"
+              required:
+                - email
+                - password
+      responses:
+        "200":
+          description: "Successful add user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User added successfully"
+        "400":
+          description: "User exists"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User already exists"
