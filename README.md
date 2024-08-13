@@ -15,7 +15,7 @@ Run MYSQL in docker first. Compile then run with rebar3. Below commands are base
 
 Build
 -----
-
+    $ rebar3 get-deps
     $ rebar3 compile
     
 Run
